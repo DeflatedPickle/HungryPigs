@@ -74,34 +74,33 @@ public abstract class MixinPigEntity extends AnimalEntity implements HasTarget, 
   @Override
   public void tickMovement() {
     if (this.world.isClient) {
-      this.eatGrassTimer = Math.max(0, this.eatGrassTimer - 1);
+      this.eatFoodTimer = Math.max(0, this.eatFoodTimer - 1);
     }
 
     if (((HasTarget) this).getTargetPos() != null
         && ((HasTarget) this).getTargetStack() != ItemStack.EMPTY
         && this.squaredDistanceTo(((HasTarget) this).getTargetPos()) < 4) {
-      HungryPigs.INSTANCE.onTickMovement(
-          this, ((HasTarget) this).getTargetPos(), ((HasTarget) this).getTargetStack());
+      HungryPigs.INSTANCE.onTickMovement(this, ((HasTarget) this).getTargetStack());
     }
 
     super.tickMovement();
   }
 
-  private int eatGrassTimer;
+  private int eatFoodTimer;
 
   @Override
-  public int getEatGrassTimer() {
-    return eatGrassTimer;
+  public int getEatFoodTimer() {
+    return eatFoodTimer;
   }
 
   @Override
-  public void setEatGrassTimer(int eatGrassTimer) {
-    this.eatGrassTimer = eatGrassTimer;
+  public void setEatFoodTimer(int eatFoodTimer) {
+    this.eatFoodTimer = eatFoodTimer;
   }
 
   public void handleStatus(byte status) {
     if (status == 10) {
-      this.eatGrassTimer = 40;
+      this.eatFoodTimer = 40;
     } else {
       super.handleStatus(status);
     }
@@ -109,24 +108,24 @@ public abstract class MixinPigEntity extends AnimalEntity implements HasTarget, 
 
   @Override
   public float getNeckAngle(float delta) {
-    if (this.eatGrassTimer <= 0) {
+    if (this.eatFoodTimer <= 0) {
       return 0.0F;
-    } else if (this.eatGrassTimer >= 4 && this.eatGrassTimer <= 36) {
+    } else if (this.eatFoodTimer >= 4 && this.eatFoodTimer <= 36) {
       return 0.4F;
     } else {
-      return this.eatGrassTimer < 4
-          ? ((float) this.eatGrassTimer - delta) / 4.0F
-          : -((float) (this.eatGrassTimer - 40) - delta) / 4.0F;
+      return this.eatFoodTimer < 4
+          ? ((float) this.eatFoodTimer - delta) / 4.0F
+          : -((float) (this.eatFoodTimer - 40) - delta) / 4.0F;
     }
   }
 
   @Override
   public float getHeadAngle(float delta) {
-    if (this.eatGrassTimer > 4 && this.eatGrassTimer <= 36) {
-      float f = ((float) (this.eatGrassTimer - 4) - delta) / 32.0F;
+    if (this.eatFoodTimer > 4 && this.eatFoodTimer <= 36) {
+      float f = ((float) (this.eatFoodTimer - 4) - delta) / 32.0F;
       return 0.62831855F + 0.21991149F * MathHelper.sin(f * 28.7F);
     } else {
-      return this.eatGrassTimer > 0 ? 0.62831855F : this.getPitch() * 0.017453292F;
+      return this.eatFoodTimer > 0 ? 0.62831855F : this.getPitch() * 0.017453292F;
     }
   }
 }

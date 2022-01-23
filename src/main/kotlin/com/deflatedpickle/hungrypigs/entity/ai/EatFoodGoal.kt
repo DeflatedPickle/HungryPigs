@@ -8,9 +8,7 @@ import com.deflatedpickle.hungrypigs.api.HasTarget
 import net.minecraft.entity.ItemEntity
 import net.minecraft.entity.ai.goal.Goal
 import net.minecraft.entity.passive.AnimalEntity
-import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
-import net.minecraft.sound.SoundCategory
 import net.minecraft.world.event.GameEvent
 import java.util.EnumSet
 
@@ -63,29 +61,24 @@ class EatFoodGoal @JvmOverloads constructor(
         target()?.let { target ->
             mob.world.let { world ->
                 world.emitGameEvent(mob, GameEvent.EAT, mob.cameraBlockPos)
-                world.playSound(
-                    null as PlayerEntity?,
-                    mob.x,
-                    mob.y,
-                    mob.z,
-                    mob.getEatSound(target.stack),
-                    SoundCategory.NEUTRAL,
-                    1.0f,
-                    1.0f + (world.random.nextFloat() - world.random.nextFloat()) * 0.4f
-                )
                 mob.applyFoodEffects(target.stack, world, mob)
-            }
-
-            (mob as HasTarget).also {
-                it.targetPos = null
-                it.targetStack = ItemStack.EMPTY
             }
 
             if (mob.isBreedingItem(target.stack)) {
                 mob.loveTicks = 300
             }
 
-            target.kill()
+            if (target.stack.count - 1 > 0) {
+                start()
+                target.stack.decrement(1)
+            } else {
+                (mob as HasTarget).also {
+                    it.targetPos = null
+                    it.targetStack = ItemStack.EMPTY
+                }
+
+                target.kill()
+            }
         }
     }
 }
