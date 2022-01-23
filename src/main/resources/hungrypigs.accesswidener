@@ -1,0 +1,12 @@
+accessWidener	v1	named
+
+accessible    field    net/minecraft/util/math/BlockPos    BITS_X    J
+accessible    field    net/minecraft/util/math/BlockPos    BIT_SHIFT_X    I
+accessible    field    net/minecraft/util/math/BlockPos    SIZE_BITS_X    I
+accessible    field    net/minecraft/util/math/BlockPos    BITS_Y    J
+accessible    field    net/minecraft/util/math/BlockPos    BITS_Z    J
+accessible    field    net/minecraft/util/math/BlockPos    BIT_SHIFT_Z    I
+accessible    field    net/minecraft/util/math/BlockPos    SIZE_BITS_Z    I
+
+accessible    method    net/minecraft/entity/LivingEntity    applyFoodEffects    (Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;)V
+accessible    method    net/minecraft/entity/LivingEntity    spawnItemParticles    (Lnet/minecraft/item/ItemStack;I)V
