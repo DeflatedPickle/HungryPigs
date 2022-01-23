@@ -2,7 +2,7 @@
 
 package com.deflatedpickle.hungrypigs.mixin;
 
-import com.deflatedpickle.hungrypigs.api.EatGrass;
+import com.deflatedpickle.hungrypigs.api.EatFood;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.model.PigEntityModel;
 import net.minecraft.client.render.entity.model.QuadrupedEntityModel;
@@ -36,8 +36,8 @@ public abstract class MixinPigEntityModel extends QuadrupedEntityModel {
   public void animateModel(Entity entity, float limbAngle, float limbDistance, float tickDelta) {
     super.animateModel(entity, limbAngle, limbDistance, tickDelta);
 
-    this.head.pivotY = 12.0f + ((EatGrass) entity).getNeckAngle(tickDelta) * 9.0f;
-    this.headPitchModifier = ((EatGrass) entity).getHeadAngle(tickDelta);
+    this.head.pivotY = 12.0f + ((EatFood) entity).getNeckAngle(tickDelta) * 9.0f;
+    this.headPitchModifier = ((EatFood) entity).getHeadAngle(tickDelta);
   }
 
   @Override

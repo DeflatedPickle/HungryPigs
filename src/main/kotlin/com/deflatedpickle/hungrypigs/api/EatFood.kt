@@ -2,7 +2,7 @@
 
 package com.deflatedpickle.hungrypigs.api
 
-interface EatGrass {
+interface EatFood {
     var eatFoodTimer: Int
 
     fun getNeckAngle(delta: Float): Float

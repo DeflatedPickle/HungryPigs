@@ -3,7 +3,7 @@
 package com.deflatedpickle.hungrypigs.mixin;
 
 import com.deflatedpickle.hungrypigs.HungryPigs;
-import com.deflatedpickle.hungrypigs.api.EatGrass;
+import com.deflatedpickle.hungrypigs.api.EatFood;
 import com.deflatedpickle.hungrypigs.api.HasTarget;
 import com.deflatedpickle.hungrypigs.entity.ai.EatFoodGoal;
 import com.deflatedpickle.hungrypigs.entity.ai.WalkToFoodGoal;
@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @SuppressWarnings("UnusedMixin")
 @Mixin(PigEntity.class)
-public abstract class MixinPigEntity extends AnimalEntity implements HasTarget, EatGrass {
+public abstract class MixinPigEntity extends AnimalEntity implements HasTarget, EatFood {
   private static final TrackedData<Vec3d> target =
       DataTracker.registerData(PigEntity.class, TrackedDataHandlers.INSTANCE.getVEC3D());
   private static final TrackedData<ItemStack> stack =
