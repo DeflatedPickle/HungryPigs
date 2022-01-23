@@ -6,6 +6,7 @@ import com.deflatedpickle.hungrypigs.HungryPigs;
 import com.deflatedpickle.hungrypigs.api.EatFood;
 import com.deflatedpickle.hungrypigs.api.HasTarget;
 import com.deflatedpickle.hungrypigs.entity.ai.EatFoodGoal;
+import com.deflatedpickle.hungrypigs.entity.ai.FindFoodGoal;
 import com.deflatedpickle.hungrypigs.entity.ai.WalkToFoodGoal;
 import com.deflatedpickle.hungrypigs.entity.data.TrackedDataHandlers;
 import net.minecraft.entity.EntityType;
@@ -66,9 +67,11 @@ public abstract class MixinPigEntity extends AnimalEntity implements HasTarget, 
 
   @Inject(method = "initGoals", at = @At("TAIL"))
   public void onInitGoals(CallbackInfo ci) {
-    var walkToFood = new WalkToFoodGoal(this);
+    var findFood = new FindFoodGoal(this);
+    var walkToFood = new WalkToFoodGoal(this, findFood::getTarget);
+    goalSelector.add(2, findFood);
     goalSelector.add(2, walkToFood);
-    goalSelector.add(2, new EatFoodGoal(this, walkToFood::getTarget));
+    goalSelector.add(2, new EatFoodGoal(this, findFood::getTarget));
   }
 
   @Override
@@ -77,9 +80,18 @@ public abstract class MixinPigEntity extends AnimalEntity implements HasTarget, 
       this.eatFoodTimer = Math.max(0, this.eatFoodTimer - 1);
     }
 
+    System.out.println(((HasTarget) this).getTargetPos());
+    System.out.println(((HasTarget) this).getTargetStack());
+
+    if (((HasTarget) this).getTargetPos() != null
+        && ((HasTarget) this).getTargetStack() != ItemStack.EMPTY) {
+      System.out.println(this.squaredDistanceTo(((HasTarget) this).getTargetPos()));
+    }
+
     if (((HasTarget) this).getTargetPos() != null
         && ((HasTarget) this).getTargetStack() != ItemStack.EMPTY
-        && this.squaredDistanceTo(((HasTarget) this).getTargetPos()) < 4) {
+        && this.squaredDistanceTo(((HasTarget) this).getTargetPos()) < 16
+        && this.eatFoodTimer == 0) {
       HungryPigs.INSTANCE.onTickMovement(this, ((HasTarget) this).getTargetStack());
     }
 

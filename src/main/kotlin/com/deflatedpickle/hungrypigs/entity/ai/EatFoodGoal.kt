@@ -12,9 +12,8 @@ import net.minecraft.item.ItemStack
 import net.minecraft.world.event.GameEvent
 import java.util.EnumSet
 
-class EatFoodGoal @JvmOverloads constructor(
+class EatFoodGoal(
     val mob: AnimalEntity,
-    val chance: Float = 0.15f,
     val target: () -> ItemEntity?
 ) : Goal() {
     var timer = 0
@@ -23,20 +22,14 @@ class EatFoodGoal @JvmOverloads constructor(
         controls = EnumSet.of(Control.MOVE, Control.LOOK, Control.JUMP)
     }
 
-    override fun canStart() =
-        if (mob.random.nextFloat() >= chance) {
-            false
-        } else {
-            val target = target()
-            target != null && mob.squaredDistanceTo(target) < 4
-        }
+    override fun canStart(): Boolean {
+        val target = target() ?: return false
 
-    override fun shouldContinue(): Boolean {
-        if (!target()!!.isAlive) {
+        if (!target.isAlive) {
             return false
         }
 
-        return true
+        return mob.squaredDistanceTo(target.pos) < 4
     }
 
     override fun start() {
