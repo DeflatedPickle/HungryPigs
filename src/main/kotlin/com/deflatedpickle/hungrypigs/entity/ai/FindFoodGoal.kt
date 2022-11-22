@@ -22,7 +22,7 @@ class FindFoodGoal @JvmOverloads constructor(
             ItemEntity::class.java,
             mob.boundingBox.expand(range.toDouble())
         ) { true }
-            .sortedBy { it.blockPos.getSquaredDistance(mob.x, mob.y, mob.z, false) }
+            .sortedBy { it.blockPos.getSquaredDistance(mob.x, mob.y, mob.z) }
             .find { it.stack.item.isFood }?.let { item ->
                 target = item.also { target ->
                     (mob as HasTarget).also {
