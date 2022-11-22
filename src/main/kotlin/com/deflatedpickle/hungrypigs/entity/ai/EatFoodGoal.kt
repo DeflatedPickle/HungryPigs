@@ -9,6 +9,7 @@ import net.minecraft.entity.ItemEntity
 import net.minecraft.entity.ai.goal.Goal
 import net.minecraft.entity.passive.AnimalEntity
 import net.minecraft.item.ItemStack
+import net.minecraft.util.math.BlockPos
 import net.minecraft.world.event.GameEvent
 import java.util.EnumSet
 
@@ -53,7 +54,7 @@ class EatFoodGoal(
 
         target()?.let { target ->
             mob.world.let { world ->
-                world.emitGameEvent(mob, GameEvent.EAT, mob.cameraBlockPos)
+                world.emitGameEvent(mob, GameEvent.EAT, BlockPos(mob.getCameraPosVec(1.0F)))
                 mob.applyFoodEffects(target.stack, world, mob)
             }
 
